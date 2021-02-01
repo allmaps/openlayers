@@ -212,8 +212,8 @@ export function createDrawCommand (regl,
 
       u_tileCount: regl.prop('tileCount'),
 
-      u_x2_mean: () => hTransformArg.x2_mean,
-      u_y2_mean: () => hTransformArg.y2_mean,
+      u_x2_mean: () => hTransformArg.x2Mean,
+      u_y2_mean: () => hTransformArg.y2Mean,
 
       'u_adfFromGeoX[0]': hTransformArg.adfFromGeoX[0],
       'u_adfFromGeoX[1]': hTransformArg.adfFromGeoX[1],

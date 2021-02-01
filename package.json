@@ -1,16 +1,14 @@
 {
   "name": "@allmaps/layers",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-alpha.2",
   "author": {
     "name": "Bert Spaan",
     "email": "hello@bertspaan.nl",
     "url": "https://bertspaan.nl"
   },
   "description": "OpenLayers Layers for IIIF-based georeferencing and warping",
-  "module": "dist/esm/index.js",
-  "files": [
-    "dist"
-  ],
+  "--module": "dist/esm/index.js",
+  "module": "index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/allmaps/layers.git"
@@ -38,6 +36,12 @@
     "node": ">=12"
   },
   "dependencies": {
-    "ol": "^6.5.0"
+    "@allmaps/transform": "^1.0.0-alpha.3",
+    "d3-geo": "^2.0.1",
+    "d3-tile": "^1.0.0",
+    "ol": "^6.5.0",
+    "potpack": "^1.0.1",
+    "ramda": "^0.27.1",
+    "regl": "^2.0.1"
   }
 }

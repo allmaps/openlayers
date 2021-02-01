@@ -2,9 +2,7 @@ import { tile } from 'd3-tile'
 import { geoMercator } from 'd3-geo'
 import { uniqWith } from 'ramda'
 
-import {databaseId} from './id'
-
-const createTransformer = require('georeference-js')
+import { createTransformer, toImage } from '@allmaps/transform'
 
 const mapTileSize = 256
 
@@ -23,42 +21,25 @@ export function getIiifTiles (size, extent, map, image) {
     .scale(projection.scale() * 2 * Math.PI)
     .translate(projection([0, 0]))()
 
-  const gcps = {
-    type: 'FeatureCollection',
-    features: map.gcps.map((gcp) => ({
-      type: 'Feature',
-      properties: {
-        pixel: gcp.pixel
-      },
-      geometry: {
-        type: 'Point',
-        coordinates: gcp.world
-      }
-    }))
-  }
-
-  const transformer = createTransformer(gcps)
+  const transformArgs = createTransformer(map.gcps)
 
   const pixelMapTiles = mapTiles
     .map((tile) => tileExtent(tile))
-    .map(([y1, x1, y2, x2]) => transformer.toPixels({
-      type: 'MultiPoint',
-      coordinates: [
-        [y1, x1],
-        [y1, x2],
-        [y2, x2],
-        [y2, x1]
-      ]
-    }))
+    .map(([y1, x1, y2, x2]) => ([
+      [y1, x1],
+      [y1, x2],
+      [y2, x2],
+      [y2, x1]
+    ].map((point) => toImage(transformArgs, point))))
     .map((tile) => tile.map(([x, y]) => ({x, y})))
 
-  const iiifTilesets = getIiifTilesets(image.iiif)
+  const iiifTilesets = getIiifTilesets(image)
   const neededIiifTiles = getNeededIiifTiles(pixelMapTiles, iiifTilesets, imageSize)
 
   return neededIiifTiles
     .map((tile) => getIiifTile(image, tile.x, tile.y, tile))
     .map((tile) => ({
-      id: databaseId(`${image.id}:${tile.urlSuffix}`),
+      id: `${image.id}:${tile.urlSuffix}`,
       ...tile,
       mapId: map.id,
       imageId: image.id
@@ -115,7 +96,7 @@ function getIiifTile (image, x, y, tileset) {
     tileHeight = Math.floor((imageSize[1] - regionY + tileset.scaleFactor - 1) / tileset.scaleFactor)
   }
 
-  const baseUrl = image.iiif['@id']
+  const baseUrl = image['@id']
 
   return {
     regionX,
