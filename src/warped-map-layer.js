@@ -191,7 +191,7 @@ export class WarpedMapLayer extends Layer {
     })
 
     this.updateTexture()
-    // this.getSource().refresh()
+    this.getSource().refresh()
   }
 
   destroy () {
@@ -274,7 +274,11 @@ export class WarpedMapLayer extends Layer {
 
   setVisible (visible) {
     this.visible = visible
-    this.getSource().refresh()
+
+    const source = this.getSource()
+    if (source) {
+      source.refresh()
+    }
   }
 
   updateCanvasSize ([width, height]) {

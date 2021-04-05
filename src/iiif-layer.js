@@ -30,6 +30,7 @@ export class IIIFLayer extends TileLayer {
       resolutions: this.getSource().getTileGrid().getResolutions(),
       extent: this.getExtent(),
       constrainOnlyCenter: true
+      // enableRotation: false
     })
   }
 }
