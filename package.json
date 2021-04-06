@@ -1,6 +1,6 @@
 {
   "name": "@allmaps/layers",
-  "version": "1.0.0-alpha.3",
+  "version": "1.0.0-alpha.4",
   "author": {
     "name": "Bert Spaan",
     "email": "hello@bertspaan.nl",
@@ -42,6 +42,6 @@
     "ol": "^6.5.0",
     "potpack": "^1.0.1",
     "ramda": "^0.27.1",
-    "regl": "^2.0.1"
+    "regl": "2.0.1"
   }
 }
