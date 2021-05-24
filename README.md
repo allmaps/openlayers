@@ -1,3 +1,1 @@
-- OpenLayers
-  - Warp Layer
-  - Mask layer
+# @allmaps/layers
