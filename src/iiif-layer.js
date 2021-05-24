@@ -1,19 +1,16 @@
-import View from 'ol/View'
-import TileLayer from 'ol/layer/Tile'
-import IIIF from 'ol/source/IIIF'
-import IIIFInfo from 'ol/format/IIIFInfo'
+import ol from 'ol'
 
 function createIIIFTileSource (image) {
-  const options = new IIIFInfo(image).getTileSourceOptions()
+  const options = new ol.format.IIIFInfo(image).getTileSourceOptions()
   if (options === undefined || options.version === undefined) {
     throw new Error('Data seems to be no valid IIIF image information.')
   }
 
   options.zDirection = -1
-  return new IIIF(options)
+  return new ol.source.IIIF(options)
 }
 
-export class IIIFLayer extends TileLayer {
+export class IIIFLayer extends ol.layer.Tile {
   constructor (image) {
     super()
 
@@ -26,11 +23,11 @@ export class IIIFLayer extends TileLayer {
   }
 
   getView () {
-    return new View({
+    return new ol.View({
       resolutions: this.getSource().getTileGrid().getResolutions(),
       extent: this.getExtent(),
-      constrainOnlyCenter: true
-      // enableRotation: false
+      constrainOnlyCenter: true,
+      enableRotation: false
     })
   }
 }

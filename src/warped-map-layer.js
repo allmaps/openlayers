@@ -1,6 +1,4 @@
-import Layer from 'ol/layer/Layer'
-import { transformExtent } from 'ol/proj'
-import { Point } from 'ol/geom'
+import ol from 'ol'
 
 import createREGL from 'regl'
 import { getIiifTiles } from './lib/tiles'
@@ -11,7 +9,7 @@ import potpack from 'potpack'
 
 import { createTransformer } from '@allmaps/transform'
 
-export class WarpedMapLayer extends Layer {
+export class WarpedMapLayer extends ol.layer.Layer {
   constructor (options) {
     options = options || {}
 
@@ -221,7 +219,7 @@ export class WarpedMapLayer extends Layer {
       return
     }
 
-    const transformedExtent = transformExtent(frameState.extent, 'EPSG:3857', 'EPSG:4326')
+    const transformedExtent = ol.proj.transformExtent(frameState.extent, 'EPSG:3857', 'EPSG:4326')
     const iiifTiles = getIiifTiles(frameState.size, transformedExtent, this.georeferencedMap, this.image)
 
     const newTiles = new Map(iiifTiles.map((tile) => ([
@@ -260,7 +258,7 @@ export class WarpedMapLayer extends Layer {
   }
 
   toLatLon (point) {
-    return new Point(point)
+    return new ol.geom.Point(point)
       .transform('EPSG:3857', 'EPSG:4326')
       .getCoordinates()
   }

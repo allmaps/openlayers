@@ -1,14 +1,16 @@
 {
   "name": "@allmaps/layers",
-  "version": "1.0.0-alpha.4",
+  "version": "1.0.0-alpha.5",
   "author": {
     "name": "Bert Spaan",
     "email": "hello@bertspaan.nl",
     "url": "https://bertspaan.nl"
   },
   "description": "OpenLayers Layers for IIIF-based georeferencing and warping",
-  "--module": "dist/esm/index.js",
-  "module": "index.js",
+  "main": "dist/layers.cjs.js",
+  "jsdelivr": "dist/layers.umd.min.js",
+  "unpkg": "dist/layers.umd.min.js",
+  "module": "src/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/allmaps/layers.git"
@@ -20,26 +22,35 @@
     "map"
   ],
   "scripts": {
-    "build": "rollup -c",
+    "bundle": "rm -rf dist && rollup -c",
     "watch": "rollup -c -w"
+  },
+  "_moduleAliases": {
+    "@allmaps/layers": "./src/index.js"
   },
   "license": "GPL-3.0-or-later",
   "devDependencies": {
     "@babel/core": "^7.12.10",
     "@babel/preset-env": "^7.12.11",
     "@rollup/plugin-babel": "^5.2.2",
+    "@rollup/plugin-commonjs": "^19.0.0",
+    "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^11.1.0",
+    "module-alias": "^2.2.2",
     "rollup": "^2.38.0",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-terser": "^7.0.2"
   },
   "engines": {
     "node": ">=12"
   },
+  "peerDependencies": {
+    "ol": "^6.5.0"
+  },
   "dependencies": {
     "@allmaps/transform": "^1.0.0-alpha.3",
     "d3-geo": "^2.0.1",
     "d3-tile": "^1.0.0",
-    "ol": "^6.5.0",
     "potpack": "^1.0.1",
     "ramda": "^0.27.1",
     "regl": "2.0.1"

@@ -150,7 +150,6 @@ function getIiifTilesets (image) {
 }
 
 function getNeededIiifTiles (pixelMapTiles, iiifTilesets, imageSize) {
-
   const allNeededIiifTiles = pixelMapTiles.map((pixelMapTile) => {
     const minX = Math.min(...pixelMapTile.map((point) => point.x))
     const maxX = Math.max(...pixelMapTile.map((point) => point.x))
