@@ -1,6 +1,6 @@
 {
   "name": "@allmaps/layers",
-  "version": "1.0.0-alpha.5",
+  "version": "1.0.0-alpha.6",
   "author": {
     "name": "Bert Spaan",
     "email": "hello@bertspaan.nl",
@@ -11,6 +11,9 @@
   "jsdelivr": "dist/layers.umd.min.js",
   "unpkg": "dist/layers.umd.min.js",
   "module": "src/index.js",
+  "files": [
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/allmaps/layers.git"
