@@ -1,15 +1,18 @@
-import ol from 'ol'
+// import ol from 'ol'
+import Layer from 'ol/layer/Layer'
+import { transformExtent } from 'ol/proj'
+import { Point } from 'ol/geom'
 
 import createREGL from 'regl'
-import { getIiifTiles } from './lib/tiles'
-import { loadImage, MAX_TEXTURE_SIZE, MAX_TILES } from './lib/textures'
-import { createDrawCommand } from './lib/regl'
+import { getIiifTiles } from './lib/tiles.js'
+import { loadImage, MAX_TEXTURE_SIZE, MAX_TILES } from './lib/textures.js'
+import { createDrawCommand } from './lib/regl.js'
 
 import potpack from 'potpack'
 
 import { createTransformer } from '@allmaps/transform'
 
-export class WarpedMapLayer extends ol.layer.Layer {
+export class WarpedMapLayer extends Layer {
   constructor (options) {
     options = options || {}
 
@@ -134,10 +137,6 @@ export class WarpedMapLayer extends ol.layer.Layer {
         context.closePath()
         context.clip()
       }
-
-      context.drawImage(tile.tileImage, 0, 0)
-
-      this.texture.subimage(canvas, tile.x, tile.y)
     })
 
     this.textureSize = [textureWidth, textureHeight]
@@ -180,7 +179,17 @@ export class WarpedMapLayer extends ol.layer.Layer {
     const baseUrl = tile.baseUrl + '/'
     const url = baseUrl + tile.urlSuffix
 
-    const tileImage = await loadImage(url)
+    let tileImage
+
+    try {
+      tileImage = await loadImage(url)
+    } catch (err) {
+      this.dispatchEvent('tile-load-error')
+    }
+
+    if (!tileImage) {
+      return
+    }
 
     this.tiles.set(tile.id, {
       loading: false,
@@ -214,12 +223,12 @@ export class WarpedMapLayer extends ol.layer.Layer {
     }
   }
 
-  updateTiles (frameState) {
+  async updateTiles (frameState) {
     if (!this.georeferencedMap) {
       return
     }
 
-    const transformedExtent = ol.proj.transformExtent(frameState.extent, 'EPSG:3857', 'EPSG:4326')
+    const transformedExtent = transformExtent(frameState.extent, 'EPSG:3857', 'EPSG:4326')
     const iiifTiles = getIiifTiles(frameState.size, transformedExtent, this.georeferencedMap, this.image)
 
     const newTiles = new Map(iiifTiles.map((tile) => ([
@@ -258,7 +267,7 @@ export class WarpedMapLayer extends ol.layer.Layer {
   }
 
   toLatLon (point) {
-    return new ol.geom.Point(point)
+    return new Point(point)
       .transform('EPSG:3857', 'EPSG:4326')
       .getCoordinates()
   }
