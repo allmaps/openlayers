@@ -137,6 +137,9 @@ export class WarpedMapLayer extends Layer {
         context.closePath()
         context.clip()
       }
+
+      context.drawImage(tile.tileImage, 0, 0)
+      this.texture.subimage(canvas, tile.x, tile.y)
     })
 
     this.textureSize = [textureWidth, textureHeight]
