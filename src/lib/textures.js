@@ -28,8 +28,6 @@ export function loadImage (url) {
       }
     })
 
-    url = 'https://raw.githubusercontent.com/openlayers/openlayers/b6c143deb294a12c49a2b76e9643e3bc37d9e169/src/ol/Collection.jss'
-
     image.crossOrigin = 'anonymous'
     image.src = url
   })
