@@ -1,5 +1,3 @@
-/* global Image, fetch */
-
 export const MAX_TEXTURE_SIZE = 8192
 export const MAX_TILES = (MAX_TEXTURE_SIZE / 512) ** 2
 
